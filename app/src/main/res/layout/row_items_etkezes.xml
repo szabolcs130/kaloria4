@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="4dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/etkezesIdopontIdo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="Idő"
+                android:textSize="20dp"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/etelId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="Id: 10"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/etelNev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="Név"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/etelKaloria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="100Kcal"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/etkezesIdopontId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="Id: 1"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/etkezesIdopontEtelId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="EtelId: 10"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/etkezesIdopontGramm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="100g"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/etkezesIdopontOsszesKaloria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="Osszes kaloria"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

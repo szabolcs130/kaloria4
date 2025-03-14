@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "etkezes",
         foreignKeys = @ForeignKey(entity = Etel.class,
                 parentColumns = "etelid",
@@ -13,7 +15,7 @@ public class Etkezes {
     private int etkezesId;
     private int etkezesIdopontEtelId;
     private String etkezesIdopontGramm;
-    private String etkezesIdopontIdo;
+    private long etkezesIdopontIdo;
 
     public int getEtkezesId() {
         return etkezesId;
@@ -39,11 +41,11 @@ public class Etkezes {
         this.etkezesIdopontGramm = etkezesIdopontGramm;
     }
 
-    public String getEtkezesIdopontIdo() {
+    public long getEtkezesIdopontIdo() {
         return etkezesIdopontIdo;
     }
 
-    public void setEtkezesIdopontIdo(String etkezesIdopontIdo) {
+    public void setEtkezesIdopontIdo(long etkezesIdopontIdo) {
         this.etkezesIdopontIdo = etkezesIdopontIdo;
     }
 }

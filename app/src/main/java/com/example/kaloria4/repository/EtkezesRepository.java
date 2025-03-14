@@ -8,20 +8,21 @@ import androidx.lifecycle.LiveData;
 import com.example.kaloria4.dao.EtkezesDao;
 import com.example.kaloria4.database.Database;
 import com.example.kaloria4.model.Etkezes;
+import com.example.kaloria4.model.EtkezesOsszevont;
 
 import java.util.List;
 
 public class EtkezesRepository {
     private Database database;
     private EtkezesDao etkezesDao;
-    private LiveData<List<Etkezes>> etkezesList;
+    private LiveData<List<EtkezesOsszevont>> etkezesList;
 
     public EtkezesRepository(Application application) {
         database=Database.getDatabase(application);
         etkezesDao= database.etkezesDao();
         etkezesList= etkezesDao.getAllEtkezes();
     }
-    public LiveData<List<Etkezes>> getAllEtkezes(){
+    public LiveData<List<EtkezesOsszevont>> getAllEtkezes(){
         return database.etkezesDao().getAllEtkezes();
     }
     public void inserEtkezes(Etkezes etkezes){

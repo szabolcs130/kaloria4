@@ -14,6 +14,11 @@ public class Etel {
         return etelid;
     }
 
+    @Override
+    public String toString() {
+        return etelnev +" "+ kaloria;
+    }
+
     public void setEtelid(int etelid) {
         this.etelid = etelid;
     }

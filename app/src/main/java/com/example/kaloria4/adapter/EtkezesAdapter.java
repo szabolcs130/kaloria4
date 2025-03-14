@@ -16,17 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kaloria4.R;
 import com.example.kaloria4.model.Etel;
 import com.example.kaloria4.model.Etkezes;
+import com.example.kaloria4.model.EtkezesOsszevont;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesAdapterVH> {
-    private List<Etkezes> etkezesList;
+    private List<EtkezesOsszevont> etkezesList;
     private Context context;
     private ClickListener clickListener;
     public EtkezesAdapter(ClickListener clickListener) {
         this.clickListener=clickListener;
     }
-    public void setData(List<Etkezes> etkezesList){
+    public void setData(List<EtkezesOsszevont> etkezesList){
         this.etkezesList=etkezesList;
         notifyDataSetChanged();
     }
@@ -35,23 +37,22 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
     public EtkezesAdapterVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context=parent.getContext();
         return new EtkezesAdapterVH(
-                LayoutInflater.from(context).inflate(R.layout.row_items,parent,false)
+                LayoutInflater.from(context).inflate(R.layout.row_items_etkezes,parent,false)
         );
     }
 
     @Override
     public void onBindViewHolder(@NonNull EtkezesAdapterVH holder, int position) {
-        Etkezes etkezes=etkezesList.get(position);
-        String username= etkezes.getEtkezesIdopontGramm();
-        String kaloria= etkezes.getEtkezesIdopontIdo();
-        holder.etelNev.setText(username);
-        holder.etelKaloria.setText(kaloria);
-        holder.imageOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPpUp(view,etkezes);
-            }
-        });
+        EtkezesOsszevont etkezes=etkezesList.get(position);
+        int gramm= etkezes.getEtkezesIdopontGramm();
+        long idopont= etkezes.getEtkezesIdopontIdo();
+        //String nev= etkezes.getete();
+       // holder.etelNev.setText(nev);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = sdf.format(idopont);
+        holder.etkezesIdopontIdo.setText(String.valueOf(formattedDate));
+        //holder.etelKaloria.setText(kaloria);
+        holder.etkezesIdopontGramm.setText(String.valueOf(gramm));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,13 +89,13 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
     }
     public class EtkezesAdapterVH extends RecyclerView.ViewHolder
     {
-        ImageView imageOptions;
-        TextView etelNev,etelKaloria;
+        TextView etkezesIdopontIdo,etelNev,etelKaloria,etkezesIdopontGramm,etkezesIdopontOsszesKaloria;
         public EtkezesAdapterVH(@NonNull View itemView) {
             super(itemView);
-            imageOptions=itemView.findViewById(R.id.imageOptions);
-            etelNev=itemView.findViewById(R.id.etelNev);
-            etelKaloria=itemView.findViewById(R.id.etelKaloria);
+            //etelNev=itemView.findViewById(R.id.etelNev);
+            //etelKaloria=itemView.findViewById(R.id.etelKaloria);
+            etkezesIdopontGramm=itemView.findViewById(R.id.etkezesIdopontGramm);
+            etkezesIdopontIdo=itemView.findViewById(R.id.etkezesIdopontIdo);
 
         }
     }

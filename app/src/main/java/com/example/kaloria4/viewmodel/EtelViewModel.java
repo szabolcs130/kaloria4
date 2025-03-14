@@ -11,10 +11,10 @@ import com.example.kaloria4.repository.EtelRepository;
 
 import java.util.List;
 
-public class ViewModel extends AndroidViewModel {
+public class EtelViewModel extends AndroidViewModel {
     private EtelRepository etelRepository;
     private LiveData<List<Etel>> etelList;
-    public ViewModel(@NonNull Application application) {
+    public EtelViewModel(@NonNull Application application) {
         super(application);
         etelRepository=new EtelRepository(application);
         etelList= etelRepository.getAllEtel();

@@ -7,13 +7,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.kaloria4.model.Etkezes;
+import com.example.kaloria4.model.EtkezesOsszevont;
 import com.example.kaloria4.repository.EtkezesRepository;
 
 import java.util.List;
 
 public class EtkezesViewModel extends AndroidViewModel {
     private EtkezesRepository etkezesRepository;
-    private LiveData<List<Etkezes>> etkezesList;
+    private LiveData<List<EtkezesOsszevont>> etkezesList;
     public EtkezesViewModel(@NonNull Application application) {
         super(application);
         etkezesRepository=new EtkezesRepository(application);
@@ -21,7 +22,7 @@ public class EtkezesViewModel extends AndroidViewModel {
 
     }
     //valtozas proba 2
-    public LiveData<List<Etkezes>> getAllEtkezes() {
+    public LiveData<List<EtkezesOsszevont>> getAllEtkezes() {
         return etkezesRepository.getAllEtkezes();
     }
     public void insertEtkezes(Etkezes etkezes){

@@ -45,8 +45,10 @@ public void setData(List<Etel> usersList){
         Etel etel=etelList.get(position);
         String username= etel.getEtelnev();
         String kaloria= etel.getKaloria();
+        String etelid= (""+etel.getEtelid());
         holder.etelNev.setText(username);
         holder.etelKaloria.setText(kaloria);
+        holder.etelid.setText(etelid);
         holder.imageOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,12 +92,13 @@ public interface ClickListener{
     public class UsersAdapterVH extends RecyclerView.ViewHolder
     {
         ImageView imageOptions;
-        TextView etelNev,etelKaloria;
+        TextView etelNev,etelKaloria,etelid;
         public UsersAdapterVH(@NonNull View itemView) {
             super(itemView);
             imageOptions=itemView.findViewById(R.id.imageOptions);
             etelNev=itemView.findViewById(R.id.etelNev);
             etelKaloria=itemView.findViewById(R.id.etelKaloria);
+            etelid=itemView.findViewById(R.id.etelId);
 
         }
     }

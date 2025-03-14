@@ -20,7 +20,7 @@ import com.example.kaloria4.R;
 import com.example.kaloria4.adapter.UsersAdapter;
 import com.example.kaloria4.databinding.FragmentGalleryBinding;
 import com.example.kaloria4.model.Etel;
-import com.example.kaloria4.viewmodel.ViewModel;
+import com.example.kaloria4.viewmodel.EtelViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
 public class GalleryFragment extends Fragment  implements UsersAdapter.ClickListener {
     RecyclerView recyclerView;
     UsersAdapter usersAdapter;
-    ViewModel userViewModel;
+    EtelViewModel userViewModel;
     FloatingActionButton floatingActionButton;
 
     private FragmentGalleryBinding binding;
@@ -43,7 +43,7 @@ public class GalleryFragment extends Fragment  implements UsersAdapter.ClickList
 
         final TextView textView = binding.textGallery;
         galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        userViewModel = new ViewModelProvider(this).get(ViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(EtelViewModel.class);
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
