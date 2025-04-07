@@ -22,4 +22,9 @@
         android:name="com.example.kaloria4.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/detailedViewFragment"
+        android:name="com.example.kaloria4.ui.home.DetailedViewFragment"
+        android:label="fragment_detailed_view"
+        tools:layout="@layout/fragment_detailed_view" />
 </navigation>
