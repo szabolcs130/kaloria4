@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -34,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
 public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickListener {
     RecyclerView recyclerView;
     EtkezesAdapter usersAdapter;
@@ -47,36 +47,29 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
-
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         userViewModel = new ViewModelProvider(this).get(EtkezesViewModel.class);
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        floatingActionButton = binding.btnNewUser;
-        usersAdapter = new EtkezesAdapter(this);
+        if (usersAdapter == null) {
+            usersAdapter = new EtkezesAdapter(this);
+            recyclerView.setAdapter(usersAdapter);
+        }
         userViewModel.getAllEtkezes().observe(getViewLifecycleOwner(), new Observer<List<EtkezesOsszevont>>() {
             @Override
             public void onChanged(List<EtkezesOsszevont> etkezes) {
-                if (etkezes.size() > 0) {
+                if (etkezes != null && !etkezes.isEmpty()) {
                     usersAdapter.setData(etkezes);
-                    recyclerView.setAdapter(usersAdapter);
+                } else {
+                    usersAdapter.setData(null);
                 }
             }
         });
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adduser();
-            }
-        });
+        floatingActionButton = binding.btnNewUser;
+        floatingActionButton.setOnClickListener(v -> adduser());
         return root;
     }
 
@@ -96,32 +89,37 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
         userViewModel.deleteEtkezes(etkezes);
     }
 
+    @Override
+    public void updateClickedEtkezes(EtkezesOsszevont etkezes) {
+
+    }
+
+    @Override
+    public void deleteClickedEtkezes(EtkezesOsszevont etkezes) {
+
+    }
+
+    @Override
+    public void updateClickedEtkezes(Object etkezes) {
+
+    }
+
+    @Override
+    public void deleteClickedEtkezes(Object etkezes) {
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onItemClick(EtkezesOsszevont etkezes) {
+
+    }
+
     public void updateuser(Etkezes etkezes) {
-         /*final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final View view = getLayoutInflater().inflate(R.layout.row_add_etkezes, null);
-        builder.setView(view);
-        AlertDialog alertDialog = builder.create();
-        Button btnAddUser = view.findViewById(R.id.addUserBtr);
-        EditText etelNev = view.findViewById(R.id.etelNev);
-        etelNev.setText(etkezes.getEtkezesIdopontGramm());
-        EditText etelKaloria = view.findViewById(R.id.etelKaloria);
-        etelKaloria.setText(etkezes.getEtkezesIdopontIdo());
-        TextView tvDetails = view.findViewById(R.id.tvDetails);
-        tvDetails.setText("Szerkeszt");
-        btnAddUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (etelNev.getText() != null) {
-                    String nev = etelNev.getText().toString().trim();
-                    String kaloria = etelKaloria.getText().toString().trim();
-                    etkezes.setEtkezesIdopontGramm(nev);
-                    etkezes.setEtkezesIdopontIdo(kaloria);
-                    userViewModel.updateUsers(etkezes);
-                    alertDialog.dismiss();
-                }
-            }
-        });
-        alertDialog.show();*/
     }
 
     public void adduser() {
@@ -129,13 +127,14 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
         final View view = getLayoutInflater().inflate(R.layout.row_add_etkezes, null);
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
+
         Button btnAddUser = view.findViewById(R.id.addUserBtr);
-        Spinner mySpinner = view.findViewById(R.id.etkezesIdopontEtelId);
+        Spinner mealSpinner = view.findViewById(R.id.etkezesIdopontEtelId);
+        Spinner typeSpinner = view.findViewById(R.id.etkezesIdopontTipus);
+        EditText grammEditText = view.findViewById(R.id.etkezesIdopontGramm);
+        TextView idoTextView = view.findViewById(R.id.etkezesIdopontIdo);
 
-        TextView etelgramm = view.findViewById(R.id.etkezesIdopontGramm);
-        TextView ido = view.findViewById(R.id.etkezesIdopontIdo);
-
-        ido.setOnClickListener(new View.OnClickListener() {
+        idoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
@@ -151,7 +150,7 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
                                 selectedDate.set(year, month, dayOfMonth);
 
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                                ido.setText(sdf.format(selectedDate.getTime()));
+                                idoTextView.setText(sdf.format(selectedDate.getTime()));
                                 selectedTimestamp = selectedDate.getTimeInMillis();
                             }
                         }, year, month, day);
@@ -162,27 +161,42 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
         etelViewModel = new ViewModelProvider(this).get(EtelViewModel.class);
         etelViewModel.getAllEtel().observe(getViewLifecycleOwner(), new Observer<List<Etel>>() {
             @Override
-            public void onChanged(List<Etel> etel) {
-                if (etel.size() > 0) {
-                    ArrayAdapter<Etel> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, etel);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mySpinner.setAdapter(adapter);
+            public void onChanged(List<Etel> etelList) {
+                if (etelList != null && !etelList.isEmpty()) {
+                    ArrayAdapter<Etel> mealAdapter = new ArrayAdapter<>(getContext(),
+                            android.R.layout.simple_spinner_item, etelList);
+                    mealAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mealSpinner.setAdapter(mealAdapter);
+                } else {
+                    Toast.makeText(getContext(), "Nincs elérhető étel!", Toast.LENGTH_SHORT).show();
+                    mealSpinner.setAdapter(null);
                 }
             }
         });
 
+        String[] mealTypes = getResources().getStringArray(R.array.meal_types);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, mealTypes);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(typeAdapter);
+
         btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Etel selectedEtel = (Etel) mySpinner.getSelectedItem();
-                if (selectedEtel != null && etelgramm.getText() != null) {
-                    String gramm = etelgramm.getText().toString().trim();
+                Etel selectedEtel = (Etel) mealSpinner.getSelectedItem();
+                String grammText = grammEditText.getText().toString().trim();
+                int gramm = 0;
+                if (!grammText.isEmpty()) {
+                    gramm = Integer.parseInt(grammText);
+                }
 
+                if (selectedEtel != null) {
                     Etkezes etkezes = new Etkezes();
                     etkezes.setEtkezesIdopontGramm(gramm);
                     etkezes.setEtkezesIdopontIdo(selectedTimestamp);
                     etkezes.setEtkezesIdopontEtelId(selectedEtel.getEtelid());
-
+                    String selectedMealType = (String) typeSpinner.getSelectedItem();
+                    etkezes.setEtkezesTipus(selectedMealType);
                     userViewModel.insertEtkezes(etkezes);
                     alertDialog.dismiss();
                 }

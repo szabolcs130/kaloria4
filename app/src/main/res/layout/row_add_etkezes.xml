@@ -2,58 +2,57 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:elevation="8dp"
     app:cardCornerRadius="4dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
         android:orientation="vertical">
-        <EditText
-            android:id="@+id/etkezesIdopontId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="EtkezesId"
-            android:visibility="gone"/>
+
         <Spinner
             android:id="@+id/etkezesIdopontEtelId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"/>
-        <!--   <EditText
-               android:id="@+id/etkezesIdopontEtelId"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_margin="10dp"
-               android:hint="Étel Név"/>-->
+            android:layout_margin="10dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/etkezesIdopontTipus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dropdown" />
+
         <EditText
             android:id="@+id/etkezesIdopontGramm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:hint="Gramm"/>
+            android:hint="Gramm"
+            android:minHeight="48dp"
+            tools:ignore="VisualLintTextFieldSize" />
+
         <EditText
             android:id="@+id/etkezesIdopontIdo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:focusable="false"
             android:hint="Étkezés ideje"
-            android:focusable="false"/>
-
+            android:minHeight="48dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/addUserBtr"
-            android:layout_below="@+id/etelKaloria"
             android:text="Mentes"/>
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

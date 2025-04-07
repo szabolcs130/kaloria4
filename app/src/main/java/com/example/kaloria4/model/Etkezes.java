@@ -1,10 +1,9 @@
 package com.example.kaloria4.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-
-import java.util.Date;
 
 @Entity(tableName = "etkezes",
         foreignKeys = @ForeignKey(entity = Etel.class,
@@ -13,9 +12,23 @@ import java.util.Date;
 public class Etkezes {
     @PrimaryKey(autoGenerate = true)
     private int etkezesId;
+
     private int etkezesIdopontEtelId;
-    private String etkezesIdopontGramm;
+    private int etkezesIdopontGramm;
     private long etkezesIdopontIdo;
+
+    private String etkezesTipus;
+
+    public Etkezes() {
+    }
+
+    public Etkezes(int etkezesId, int etkezesIdopontEtelId, int etkezesIdopontGramm, long etkezesIdopontIdo, String etkezesTipus) {
+        this.etkezesId = etkezesId;
+        this.etkezesIdopontEtelId = etkezesIdopontEtelId;
+        this.etkezesIdopontGramm = etkezesIdopontGramm;
+        this.etkezesIdopontIdo = etkezesIdopontIdo;
+        this.etkezesTipus = etkezesTipus;
+    }
 
     public int getEtkezesId() {
         return etkezesId;
@@ -33,11 +46,11 @@ public class Etkezes {
         this.etkezesIdopontEtelId = etkezesIdopontEtelId;
     }
 
-    public String getEtkezesIdopontGramm() {
+    public int getEtkezesIdopontGramm() {
         return etkezesIdopontGramm;
     }
 
-    public void setEtkezesIdopontGramm(String etkezesIdopontGramm) {
+    public void setEtkezesIdopontGramm(int etkezesIdopontGramm) {
         this.etkezesIdopontGramm = etkezesIdopontGramm;
     }
 
@@ -47,5 +60,13 @@ public class Etkezes {
 
     public void setEtkezesIdopontIdo(long etkezesIdopontIdo) {
         this.etkezesIdopontIdo = etkezesIdopontIdo;
+    }
+
+    public String getEtkezesTipus() {
+        return etkezesTipus;
+    }
+
+    public void setEtkezesTipus(String etkezesTipus) {
+        this.etkezesTipus = etkezesTipus;
     }
 }
