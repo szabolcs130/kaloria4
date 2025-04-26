@@ -3,10 +3,12 @@ package com.example.kaloria4.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -54,7 +56,6 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
     @Override
     public void onBindViewHolder(@NonNull EtkezesAdapterVH holder, int position) {
         EtkezesOsszevont etkezes = etkezesListWithoutDate != null ? etkezesListWithoutDate.get(position) : etkezesList.get(position);
-
         int gramm = etkezes.getEtkezesIdopontGramm();
         long idopont = etkezes.getEtkezesIdopontIdo();
         String etelNev = etkezes.getEtkezesIdopontEtelNev();
@@ -77,15 +78,15 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
         holder.etkezesIdopontOsszesKaloria.setText("Összes: " + osszKaloria + " kcal");
         holder.etkezesTipusSzoveg.setText(etkezesTipus != null ? etkezesTipus : "Ismeretlen");
 
-        holder.itemView.setOnLongClickListener(v -> {
+        holder.imageOptions.setOnClickListener(v -> {
             showPpUp(v, etkezes);
-            return true;
         });
     }
 
     public void showPpUp(View view, EtkezesOsszevont etkezes) {
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.inflate(R.menu.menu);
+        popupMenu.setGravity(Gravity.END);
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.itUpdate) {
@@ -101,14 +102,10 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
     }
 
     public interface ClickListener {
-        void updateClickedEtkezes(Etkezes etkezes);
-        void deleteClickedEtkezes(Etkezes etkezes);
         void updateClickedEtkezes(EtkezesOsszevont etkezes);
         void deleteClickedEtkezes(EtkezesOsszevont etkezes);
-        void updateClickedEtkezes(Object etkezes);
-        void deleteClickedEtkezes(Object etkezes);
-        void onItemClick(int position);
-        void onItemClick(EtkezesOsszevont etkezes);
+
+        void updateEtkezes(EtkezesOsszevont etkezes);
     }
 
     @Override
@@ -118,7 +115,7 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
 
     public class EtkezesAdapterVH extends RecyclerView.ViewHolder {
         TextView etkezesIdopontIdo, etelNev, etelKaloria, etkezesIdopontGramm, etkezesIdopontOsszesKaloria, etkezesTipusSzoveg;
-
+        ImageView imageOptions;
         public EtkezesAdapterVH(@NonNull View itemView) {
             super(itemView);
             etelNev = itemView.findViewById(R.id.etelNev);
@@ -127,6 +124,7 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
             etkezesIdopontIdo = itemView.findViewById(R.id.etkezesIdopontIdo);
             etkezesIdopontOsszesKaloria = itemView.findViewById(R.id.etkezesIdopontOsszesKaloria);
             etkezesTipusSzoveg = itemView.findViewById(R.id.etkezesIdopontTipusSzoveg);
+            imageOptions = itemView.findViewById(R.id.imageOptions);
         }
     }
 }

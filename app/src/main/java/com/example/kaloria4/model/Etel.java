@@ -9,6 +9,7 @@ public class Etel {
     private int etelid;
     private String etelnev;
     private String kaloria;
+    private String ImageUri;
 
     public int getEtelid() {
         return etelid;
@@ -37,5 +38,13 @@ public class Etel {
 
     public void setKaloria(String kaloria) {
         this.kaloria = kaloria;
+    }
+
+    public String getImageUri() {
+        return ImageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        ImageUri = imageUri;
     }
 }

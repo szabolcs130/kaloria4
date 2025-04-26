@@ -22,7 +22,7 @@ public abstract class Database extends RoomDatabase {
         if (INSTANCE == null){
             synchronized (Database.class){
                 if (INSTANCE == null) {
-                    INSTANCE= Room.databaseBuilder(context,Database.class,"kaloria6.db").build();
+                    INSTANCE= Room.databaseBuilder(context,Database.class,"kaloria7.db").build();
                 }
             }
         }

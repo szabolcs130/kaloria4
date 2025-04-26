@@ -4,8 +4,7 @@
     android:id="@+id/itUpdate"
     android:title="Szerkeszt"/>
 
-<item
-    android:id="@+id/itDelete"
-    android:title="Torol"
-    />
+    <item
+        android:id="@+id/itDelete"
+        android:title="Töröl" />
 </menu>
