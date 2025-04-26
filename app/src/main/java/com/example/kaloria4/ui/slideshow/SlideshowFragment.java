@@ -38,18 +38,17 @@ import java.util.Locale;
 public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickListener {
     RecyclerView recyclerView;
     EtkezesAdapter usersAdapter;
-    EtkezesViewModel userViewModel;
+    EtkezesViewModel etkezesViewModel;
     EtelViewModel etelViewModel;
     FloatingActionButton floatingActionButton;
     private FragmentSlideshowBinding binding;
-
     private long selectedTimestamp = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        userViewModel = new ViewModelProvider(this).get(EtkezesViewModel.class);
+        etkezesViewModel = new ViewModelProvider(this).get(EtkezesViewModel.class);
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -58,7 +57,7 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
             usersAdapter = new EtkezesAdapter(this);
             recyclerView.setAdapter(usersAdapter);
         }
-        userViewModel.getAllEtkezes().observe(getViewLifecycleOwner(), new Observer<List<EtkezesOsszevont>>() {
+        etkezesViewModel.getAllEtkezes().observe(getViewLifecycleOwner(), new Observer<List<EtkezesOsszevont>>() {
             @Override
             public void onChanged(List<EtkezesOsszevont> etkezes) {
                 if (etkezes != null && !etkezes.isEmpty()) {
@@ -78,49 +77,89 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
         super.onDestroyView();
         binding = null;
     }
-
-    @Override
-    public void updateClickedEtkezes(Etkezes etkezes) {
-        updateuser(etkezes);
-    }
-
-    @Override
-    public void deleteClickedEtkezes(Etkezes etkezes) {
-        userViewModel.deleteEtkezes(etkezes);
-    }
-
-    @Override
+        @Override
     public void updateClickedEtkezes(EtkezesOsszevont etkezes) {
-
+        updateEtkezes(etkezes);
     }
 
     @Override
-    public void deleteClickedEtkezes(EtkezesOsszevont etkezes) {
-
+    public void deleteClickedEtkezes(EtkezesOsszevont etkezesOsszevont) {
+        Etkezes etkezes = new Etkezes();
+        etkezes.setEtkezesId(etkezesOsszevont.getEtkezesId());
+        etkezesViewModel.deleteEtkezes(etkezes);
     }
-
     @Override
-    public void updateClickedEtkezes(Object etkezes) {
+    public void updateEtkezes(EtkezesOsszevont etkezes) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final View view = getLayoutInflater().inflate(R.layout.row_add_etkezes, null);
+        builder.setView(view);
+        AlertDialog alertDialog = builder.create();
 
+        Button btnUpdateUser = view.findViewById(R.id.addUserBtr);
+        Spinner mealSpinner = view.findViewById(R.id.etkezesIdopontEtelId);
+        Spinner typeSpinner = view.findViewById(R.id.etkezesIdopontTipus);
+        EditText grammEditText = view.findViewById(R.id.etkezesIdopontGramm);
+        TextView idoTextView = view.findViewById(R.id.etkezesIdopontIdo);
+
+        grammEditText.setText(String.valueOf(etkezes.getEtkezesIdopontGramm()));
+        idoTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(etkezes.getEtkezesIdopontIdo()));
+
+        etelViewModel.getAllEtel().observe(getViewLifecycleOwner(), new Observer<List<Etel>>() {
+            @Override
+            public void onChanged(List<Etel> etelList) {
+                if (etelList != null && !etelList.isEmpty()) {
+                    ArrayAdapter<Etel> mealAdapter = new ArrayAdapter<>(getContext(),
+                            android.R.layout.simple_spinner_item, etelList);
+                    mealAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mealSpinner.setAdapter(mealAdapter);
+
+                    for (int i = 0; i < etelList.size(); i++) {
+                        if (etelList.get(i).getEtelid() == etkezes.getEtkezesIdopontEtelId()) {
+                            mealSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Nincs elérhető étel!", Toast.LENGTH_SHORT).show();
+                    mealSpinner.setAdapter(null);
+                }
+            }
+        });
+
+        String[] mealTypes = getResources().getStringArray(R.array.meal_types);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, mealTypes);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(typeAdapter);
+
+        typeSpinner.setSelection(((ArrayAdapter<String>) typeSpinner.getAdapter()).getPosition(etkezes.getEtkezesTipus()));
+
+        btnUpdateUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Etel selectedEtel = (Etel) mealSpinner.getSelectedItem();
+                String grammText = grammEditText.getText().toString().trim();
+                int gramm = 0;
+                if (!grammText.isEmpty()) {
+                    gramm = Integer.parseInt(grammText);
+                }
+
+                if (selectedEtel != null) {
+                    Etkezes updatedEtkezes = new Etkezes();
+                    updatedEtkezes.setEtkezesIdopontGramm(gramm);
+                    updatedEtkezes.setEtkezesIdopontIdo(selectedTimestamp);
+                    updatedEtkezes.setEtkezesIdopontEtelId(selectedEtel.getEtelid());
+                    String selectedMealType = (String) typeSpinner.getSelectedItem();
+                    updatedEtkezes.setEtkezesTipus(selectedMealType);
+
+                    etkezesViewModel.updateUsers(updatedEtkezes);
+                    alertDialog.dismiss();
+                }
+            }
+        });
+        alertDialog.show();
     }
 
-    @Override
-    public void deleteClickedEtkezes(Object etkezes) {
-
-    }
-
-    @Override
-    public void onItemClick(int position) {
-
-    }
-
-    @Override
-    public void onItemClick(EtkezesOsszevont etkezes) {
-
-    }
-
-    public void updateuser(Etkezes etkezes) {
-    }
 
     public void adduser() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -197,7 +236,7 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
                     etkezes.setEtkezesIdopontEtelId(selectedEtel.getEtelid());
                     String selectedMealType = (String) typeSpinner.getSelectedItem();
                     etkezes.setEtkezesTipus(selectedMealType);
-                    userViewModel.insertEtkezes(etkezes);
+                    etkezesViewModel.insertEtkezes(etkezes);
                     alertDialog.dismiss();
                 }
             }
