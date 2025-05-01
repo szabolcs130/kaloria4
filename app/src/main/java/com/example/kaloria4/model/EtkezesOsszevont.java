@@ -17,7 +17,7 @@ public class EtkezesOsszevont {
 
     public int etelid;
     public String etkezesIdopontEtelNev;
-    public int kaloria;
+    public double kaloria;
 
     public int getEtkezesId() {
         return etkezesId;
@@ -67,11 +67,11 @@ public class EtkezesOsszevont {
         this.etkezesIdopontEtelNev = etkezesIdopontEtelNev;
     }
 
-    public int getKaloria() {
+    public double getKaloria() {
         return kaloria;
     }
 
-    public void setKaloria(int kaloria) {
+    public void setKaloria(double kaloria) {
         this.kaloria = kaloria;
     }
 

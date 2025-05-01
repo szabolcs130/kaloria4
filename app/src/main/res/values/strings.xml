@@ -10,6 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Ételek</string>
     <string name="menu_slideshow">Étkezés</string>
+    <string name="menu_diagram">Diagram</string>
     <string-array name="meal_types">
         <item>Reggeli</item>
         <item>Ebéd</item>

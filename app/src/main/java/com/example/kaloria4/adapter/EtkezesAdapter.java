@@ -59,13 +59,13 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
         int gramm = etkezes.getEtkezesIdopontGramm();
         long idopont = etkezes.getEtkezesIdopontIdo();
         String etelNev = etkezes.getEtkezesIdopontEtelNev();
-        int kaloria = etkezes.getKaloria();
+        double kaloria = etkezes.getKaloria();
         String etkezesTipus = etkezes.getEtkezesTipus();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = sdf.format(idopont);
 
-        int osszKaloria = (kaloria * gramm) / 100;
+        double osszKaloria = (kaloria * gramm) / 100.0;
 
         holder.etelNev.setText(etelNev);
         holder.etelKaloria.setText(kaloria + " kcal / 100g");
