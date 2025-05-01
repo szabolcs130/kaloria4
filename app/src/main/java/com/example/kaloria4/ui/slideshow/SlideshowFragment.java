@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -20,7 +19,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.kaloria4.R;
 import com.example.kaloria4.adapter.EtkezesAdapter;
 import com.example.kaloria4.databinding.FragmentSlideshowBinding;
@@ -49,7 +47,7 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         etkezesViewModel = new ViewModelProvider(this).get(EtkezesViewModel.class);
-
+        etelViewModel = new ViewModelProvider(requireActivity()).get(EtelViewModel.class);
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -103,6 +101,35 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
 
         grammEditText.setText(String.valueOf(etkezes.getEtkezesIdopontGramm()));
         idoTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(etkezes.getEtkezesIdopontIdo()));
+        btnUpdateUser.setText("Frissít");
+        String cimSzoveg = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(etkezes.getEtkezesIdopontIdo()) +" dátumú "+etkezes.getEtkezesIdopontEtelNev()+" étkezés adatainak módosítása";
+        TextView tvdetails = view.findViewById(R.id.tvDetails);
+        tvdetails.setText(cimSzoveg);
+        idoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(etkezes.getEtkezesIdopontIdo());
+
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                Calendar selectedDate = Calendar.getInstance();
+                                selectedDate.set(year, month, dayOfMonth);
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                idoTextView.setText(sdf.format(selectedDate.getTime()));
+                                selectedTimestamp = selectedDate.getTimeInMillis();
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
 
         etelViewModel.getAllEtel().observe(getViewLifecycleOwner(), new Observer<List<Etel>>() {
             @Override
@@ -146,6 +173,7 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
 
                 if (selectedEtel != null) {
                     Etkezes updatedEtkezes = new Etkezes();
+                    updatedEtkezes.setEtkezesId(etkezes.getEtkezesId());
                     updatedEtkezes.setEtkezesIdopontGramm(gramm);
                     updatedEtkezes.setEtkezesIdopontIdo(selectedTimestamp);
                     updatedEtkezes.setEtkezesIdopontEtelId(selectedEtel.getEtelid());
@@ -157,9 +185,9 @@ public class SlideshowFragment extends Fragment implements EtkezesAdapter.ClickL
                 }
             }
         });
+
         alertDialog.show();
     }
-
 
     public void adduser() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

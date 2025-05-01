@@ -102,7 +102,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersAdapter
             etelNev = itemView.findViewById(R.id.etelNev);
             etelKaloria = itemView.findViewById(R.id.etelKaloria);
             etelid = itemView.findViewById(R.id.etelId);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.imagePreview);
         }
     }
 }
