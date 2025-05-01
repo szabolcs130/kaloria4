@@ -1,9 +1,9 @@
 package com.example.kaloria4.ui.gallery;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -21,18 +19,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.kaloria4.R;
 import com.example.kaloria4.adapter.UsersAdapter;
 import com.example.kaloria4.databinding.FragmentGalleryBinding;
 import com.example.kaloria4.model.Etel;
 import com.example.kaloria4.viewmodel.EtelViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements UsersAdapter.ClickListener {
@@ -48,14 +45,9 @@ public class GalleryFragment extends Fragment implements UsersAdapter.ClickListe
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         etelViewModel = new ViewModelProvider(this).get(EtelViewModel.class);
         recyclerView = binding.recyclerView;
@@ -72,18 +64,37 @@ public class GalleryFragment extends Fragment implements UsersAdapter.ClickListe
             }
         });
 
+        EditText searchEditText = binding.searchEtel;
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                String query = charSequence.toString();
+                etelViewModel.searchEtel(query).observe(getViewLifecycleOwner(), new Observer<List<Etel>>() {
+                    @Override
+                    public void onChanged(List<Etel> etels) {
+                        usersAdapter.setData(etels);
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
         floatingActionButton.setOnClickListener(v -> adduser());
         pickMedia = registerForActivityResult(
                 new ActivityResultContracts.PickVisualMedia(),
                 uri -> {
-                    if (uri != null) {
-                        selectedImageUri = uri.toString();
-                        Log.d("gallery uri", selectedImageUri);
-
-                        if (selectedImageView != null) {
-                            selectedImageView.setImageURI(uri);
-                            selectedImageView.setVisibility(View.VISIBLE);
-                        }
+                    if (uri != null && selectedImageView != null) {
+                        selectedImageUri=uri.toString();
+                        Glide.with(getContext())
+                                .load(uri)
+                                .placeholder(R.drawable.ic_menu_gallery)
+                                .error(R.drawable.baseline_more_vert_24)
+                                .into(selectedImageView);
                     }
                 }
         );
@@ -112,23 +123,25 @@ public class GalleryFragment extends Fragment implements UsersAdapter.ClickListe
         final View view = getLayoutInflater().inflate(R.layout.row_add, null);
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
-        selectedImageView = view.findViewById(R.id.imageView);
 
+        selectedImageView = view.findViewById(R.id.imagePreview);
         Button btnAddUser = view.findViewById(R.id.addUserBtr);
         EditText etelNev = view.findViewById(R.id.etelNev);
         EditText etelKaloria = view.findViewById(R.id.etelKaloria);
         TextView tvDetails = view.findViewById(R.id.tvDetails);
         Button btnPickImage = view.findViewById(R.id.selectImageButton);
-        ImageView imageView = view.findViewById(R.id.imageView);
+        TextView etelNevError = view.findViewById(R.id.error_name);
+        TextView kaloriaError = view.findViewById(R.id.error_kaloria);
         etelNev.setText(etel.getEtelnev());
         etelKaloria.setText(etel.getKaloria());
-        tvDetails.setText("Szerkesztés");
-
-        if (etel.getImageUri() != null) {
-            Uri uri = Uri.parse(etel.getImageUri());
-            imageView.setImageURI(uri);
-            imageView.setVisibility(View.VISIBLE);
-        }
+        String cimSzoveg = etel.getEtelnev() + " étel adatainak módosítása";
+        tvDetails.setText(cimSzoveg);
+        Glide.with(getContext())
+                .load(etel.getImageUri())
+                .placeholder(R.drawable.ic_menu_gallery)
+                .error(R.drawable.baseline_more_vert_24)
+                .into(selectedImageView);
+        btnAddUser.setText("Frissít");
 
         btnPickImage.setOnClickListener(v -> {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
@@ -137,17 +150,31 @@ public class GalleryFragment extends Fragment implements UsersAdapter.ClickListe
         });
 
         btnAddUser.setOnClickListener(v -> {
-            String nev = etelNev.getText().toString().trim();
-            String kaloria = etelKaloria.getText().toString().trim();
-            etel.setEtelnev(nev);
-            etel.setKaloria(kaloria);
-            if (selectedImageUri != null) {
-                etel.setImageUri(selectedImageUri);
-            }
-            etelViewModel.updateUsers(etel);
-            alertDialog.dismiss();
-        });
+            String updatedNev = etelNev.getText().toString().trim();
+            String updatedKaloria = etelKaloria.getText().toString().trim();
+            String updatedImageUrl = selectedImageUri;
+            boolean hasError = false;
+            if (updatedNev.isEmpty()) {
+                etelNevError.setVisibility(View.VISIBLE);
+                hasError = true;
+            } else {etelNevError.setVisibility(View.GONE);}
 
+            if(updatedKaloria.isEmpty())
+            {
+                kaloriaError.setVisibility(View.VISIBLE);
+                hasError = true;
+            }
+            else{kaloriaError.setVisibility(View.GONE);}
+            if (!hasError) {
+                etel.setEtelnev(updatedNev);
+                etel.setKaloria(updatedKaloria);
+                etel.setImageUri(updatedImageUrl);
+
+                etelViewModel.updateUsers(etel);
+                alertDialog.dismiss();
+            }
+
+        });
         alertDialog.show();
     }
 
@@ -158,7 +185,7 @@ public class GalleryFragment extends Fragment implements UsersAdapter.ClickListe
         final View view = getLayoutInflater().inflate(R.layout.row_add, null);
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
-        selectedImageView = view.findViewById(R.id.imageView);
+        selectedImageView = view.findViewById(R.id.imagePreview);
 
         Button btnAddUser = view.findViewById(R.id.addUserBtr);
         EditText etelNev = view.findViewById(R.id.etelNev);
@@ -174,7 +201,6 @@ public class GalleryFragment extends Fragment implements UsersAdapter.ClickListe
         });
 
         btnAddUser.setOnClickListener(v -> {
-            btnAddUser.setText("Frissít");
             String etelNevText = etelNev.getText().toString().trim();
             String etelKaloriaText = etelKaloria.getText().toString().trim();
             String imageUrl = selectedImageUri;

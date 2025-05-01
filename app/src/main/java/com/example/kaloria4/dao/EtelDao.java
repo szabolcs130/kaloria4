@@ -21,4 +21,8 @@ void insertEtel(Etel etel);
     void deleteEtel(Etel etel);
     @Query("Select * from etel")
     LiveData<List<Etel>> getAllEtel();
+    @Query("SELECT * FROM etel WHERE etelnev LIKE :query")
+    LiveData<List<Etel>> searchEtel(String query);
+
+
 }

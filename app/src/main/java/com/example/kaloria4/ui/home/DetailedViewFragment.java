@@ -43,23 +43,7 @@ public class DetailedViewFragment extends Fragment {
                     RecyclerView recyclerView = new RecyclerView(requireContext());
                     recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-                    EtkezesAdapter adapter = new EtkezesAdapter(new EtkezesAdapter.ClickListener() {
-                        @Override
-                        public void updateClickedEtkezes(EtkezesOsszevont etkezes) {
-
-                        }
-
-                        @Override
-                        public void deleteClickedEtkezes(EtkezesOsszevont etkezes) {
-
-                        }
-                        @Override
-                        public void updateEtkezes(EtkezesOsszevont etkezes) {
-                        }
-
-                    });
-
-                    adapter.setDataWithoutDate(etkezesLista);
+                    EtkezesAdapter adapter = getEtkezesAdapter(etkezesLista);
 
                     recyclerView.setAdapter(adapter);
                     containerLayout.addView(recyclerView);
@@ -68,5 +52,26 @@ public class DetailedViewFragment extends Fragment {
         }
 
         return root;
+    }
+    @NonNull
+    private static EtkezesAdapter getEtkezesAdapter(List<EtkezesOsszevont> etkezesLista) {
+        EtkezesAdapter adapter = new EtkezesAdapter(new EtkezesAdapter.ClickListener() {
+            @Override
+            public void updateClickedEtkezes(EtkezesOsszevont etkezes) {
+
+            }
+
+            @Override
+            public void deleteClickedEtkezes(EtkezesOsszevont etkezes) {
+
+            }
+            @Override
+            public void updateEtkezes(EtkezesOsszevont etkezes) {
+            }
+
+        });
+
+        adapter.setDataWithoutDate(etkezesLista);
+        return adapter;
     }
 }

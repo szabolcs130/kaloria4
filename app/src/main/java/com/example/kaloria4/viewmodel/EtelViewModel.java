@@ -20,7 +20,6 @@ public class EtelViewModel extends AndroidViewModel {
         etelList= etelRepository.getAllEtel();
 
     }
-//valtozas proba 2
     public LiveData<List<Etel>> getAllEtel() {
         return etelRepository.getAllEtel();
     }
@@ -32,5 +31,7 @@ public class EtelViewModel extends AndroidViewModel {
     }
     public void deleteUsers(Etel etel){etelRepository.deleteEtel(etel);
     }
-
+    public LiveData<List<Etel>> searchEtel(String query) {
+        return etelRepository.searchEtel(query);
+    }
 }
