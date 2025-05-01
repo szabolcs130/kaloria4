@@ -1,111 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@color/light_blue">
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center">-->
 
-    <TextView
-        android:id="@+id/tvDetails"
-        android:text="Új étel felvétele"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#333333"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="Új étel felvétele"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etelNev"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/tvDetails"
-        android:layout_marginTop="20dp"
-        android:hint="Étel neve"
-        android:background="@android:drawable/edit_text"
-        android:padding="10dp" />
+        <EditText
+            android:id="@+id/etelNev"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/tvDetails"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="15dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Étel neve"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDetails" />
 
-    <EditText
-        android:id="@+id/etelKaloria"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/etelNev"
-        android:layout_marginTop="16dp"
-        android:hint="Kalória"
-        android:background="@android:drawable/edit_text"
-        android:padding="10dp" />
+        <EditText
+            android:id="@+id/etelKaloria"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/etelNev"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Kalória"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etelNev" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/selectImageButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etelKaloria"
-        android:layout_marginTop="16dp"
-        app:icon="@drawable/ic_gallery"
-        app:iconTint="@android:color/holo_blue_bright"
-        android:textColor="@android:color/white"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        android:backgroundTint="@color/teal_700"
-        android:text="Kép kiválasztása" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etelKaloria"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="@color/teal_700"
+            android:text="Kép kiválasztása"
+            android:textColor="@android:color/white"
+            app:icon="@drawable/ic_gallery"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/holo_blue_bright"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etelKaloria" />
 
-    <ImageView
-        android:id="@+id/imagePreview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/image_preview_bg"
-        android:scaleType="fitXY" />
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/image_preview_bg"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectImageButton" />
 
-    <EditText
-        android:id="@+id/helyImageUrl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Kép URL (nem kötelező)"
-        android:padding="12dp"
-        android:inputType="textUri"
-        android:layout_marginTop="12dp"
-        android:visibility="gone" />
-    <TextView
-        android:id="@+id/error_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="A név mező kitöltése kötelező"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="gone"
-        android:layout_marginTop="4dp" />
+        <EditText
+            android:id="@+id/helyImageUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:hint="Kép URL (nem kötelező)"
+            android:inputType="textUri"
+            android:padding="12dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectImageButton" />
 
-    <TextView
-        android:id="@+id/error_kaloria"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="A kalória megadása kötelező"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="gone"
-        android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/error_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A név mező kitöltése kötelező"
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etelNev" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addUserBtr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hozzáadás"
-        app:icon="@drawable/ic_add"
-        android:drawablePadding="8dp"
-        android:padding="12dp"
-        android:textColor="@android:color/white"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:iconTint="@android:color/white"
-        android:backgroundTint="@color/teal_700"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/error_kaloria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A kalória megadása kötelező"
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etelKaloria" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addUserBtr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="@color/teal_700"
+            android:drawablePadding="8dp"
+            android:padding="12dp"
+            android:text="Hozzáadás"
+            android:textColor="@android:color/white"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imagePreview" />
+        <!--</LinearLayout>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
