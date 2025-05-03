@@ -27,9 +27,13 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
     private List<EtkezesOsszevont> etkezesListWithoutDate;
     private Context context;
     private ClickListener clickListener;
-
+    private boolean reszletes;
     public EtkezesAdapter(ClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+    public EtkezesAdapter(ClickListener clickListener,boolean reszletes) {
+        this.clickListener = clickListener;
+        this.reszletes=reszletes;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -125,6 +129,10 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
             etkezesIdopontOsszesKaloria = itemView.findViewById(R.id.etkezesIdopontOsszesKaloria);
             etkezesTipusSzoveg = itemView.findViewById(R.id.etkezesIdopontTipusSzoveg);
             imageOptions = itemView.findViewById(R.id.imageOptions);
+            if (reszletes==true){
+                imageOptions.setVisibility(View.GONE);
+                reszletes=false;
+            }
         }
     }
 }

@@ -69,7 +69,7 @@ public class DetailedViewFragment extends Fragment {
             public void updateEtkezes(EtkezesOsszevont etkezes) {
             }
 
-        });
+        },true);
 
         adapter.setDataWithoutDate(etkezesLista);
         return adapter;
