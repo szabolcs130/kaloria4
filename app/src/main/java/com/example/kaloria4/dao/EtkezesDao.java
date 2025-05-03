@@ -34,7 +34,8 @@ public interface EtkezesDao {
             "SUM((etel.kaloria * etkezes.etkezesIdopontGramm) / 100.0) AS kaloria  " +
             "FROM etkezes INNER JOIN etel ON etkezes.etkezesIdopontEtelId = etel.etelid" +
             " GROUP BY date(etkezes.etkezesIdopontIdo / 1000, 'unixepoch')"+
-            " ORDER BY kaloria DESC")
+            " ORDER BY date(etkezes.etkezesIdopontIdo / 1000, 'unixepoch') DESC")
+        //" ORDER BY kaloria DESC")
     LiveData<List<EtkezesOsszevont>> getAllEtkezesMaxKaloria();
     @Query("SELECT MAX(nagy.kaloria) AS kaloria, " +
             "nagy.etkezesId AS etkezesId, " +
