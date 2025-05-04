@@ -2,8 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_NapiKaloria"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_NapiKaloria"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_HetiKaloria"
+        android:orderInCategory="100"
+        android:title="@string/action_HetiKaloria"
+        />
+    <item
+        android:id="@+id/action_ElfogaszthatoKaloria"
+        android:orderInCategory="100"
+        android:title="@string/action_ElfogaszthatoKaloria"
+        />
 </menu>
