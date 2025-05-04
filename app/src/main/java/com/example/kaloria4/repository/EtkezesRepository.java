@@ -28,6 +28,8 @@ public class EtkezesRepository {
         return database.etkezesDao().getAllEtkezesMaxKaloria();
     }public LiveData<List<EtkezesOsszevont>> getAllEtkezesMaxKaloriaMax(){
         return database.etkezesDao().getAllEtkezesMaxKaloriaMax();
+    }public LiveData<List<EtkezesOsszevont>> getAllEtkezesGroupByHet(){
+        return database.etkezesDao().getAllEtkezesGroupByHet();
     }
     public void inserEtkezes(Etkezes etkezes){
         new AsyncTask<Void, Void, Void>() {

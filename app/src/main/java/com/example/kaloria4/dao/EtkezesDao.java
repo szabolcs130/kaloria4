@@ -60,5 +60,16 @@ public interface EtkezesDao {
             "ORDER BY kaloria DESC " +
             ") AS nagy")
     LiveData<List<EtkezesOsszevont>> getAllEtkezesMaxKaloriaMax();
+    @Query("SELECT etkezes.etkezesId AS etkezesId," +
+            " etkezes.etkezesIdopontEtelId AS etkezesIdopontEtelId," +
+            "etkezes.etkezesIdopontGramm AS etkezesIdopontGramm," +
+            "etkezes.etkezesTipus as etkezesTipus," +
+            " etkezes.etkezesIdopontIdo  AS etkezesIdopontIdo," +
+            "etel.etelid AS etelid," +
+            "etel.etelnev AS etkezesIdopontEtelNev," +
+            "SUM((etel.kaloria * etkezes.etkezesIdopontGramm) / 100.0) AS kaloria  " +
+            "FROM etkezes INNER JOIN etel ON etkezes.etkezesIdopontEtelId = etel.etelid"+
+            " Group By strftime('%Y', etkezes.etkezesIdopontIdo / 1000, 'unixepoch'),strftime('%W', etkezesIdopontIdo / 1000, 'unixepoch')")
+    LiveData<List<EtkezesOsszevont>> getAllEtkezesGroupByHet();
 }
 //MAX((etel.kaloria+0.0)/100*etkezes.etkezesIdopontGramm)
