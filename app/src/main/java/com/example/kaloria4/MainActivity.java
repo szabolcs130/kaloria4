@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_NapiKaloria).setVisible(false);
+        menu.findItem(R.id.action_HetiKaloria).setVisible(false);
+        menu.findItem(R.id.action_ElfogaszthatoKaloria).setVisible(false);
         return true;
     }
 
