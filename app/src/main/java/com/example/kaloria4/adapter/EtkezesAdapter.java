@@ -131,7 +131,7 @@ public class EtkezesAdapter extends RecyclerView.Adapter<EtkezesAdapter.EtkezesA
             imageOptions = itemView.findViewById(R.id.imageOptions);
             if (reszletes==true){
                 imageOptions.setVisibility(View.GONE);
-                reszletes=false;
+                //reszletes=false;
             }
         }
     }
