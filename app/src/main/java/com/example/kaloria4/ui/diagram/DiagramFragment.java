@@ -17,6 +17,7 @@ import com.example.kaloria4.R;
 import com.example.kaloria4.databinding.FragmentDiagramBinding;
 import com.example.kaloria4.model.EtkezesOsszevont;
 import com.example.kaloria4.viewmodel.EtkezesViewModel;
+import com.example.kaloria4.viewmodel.ProfileViewModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -34,6 +35,7 @@ import java.util.List;
 
 public class DiagramFragment extends Fragment {
     private EtkezesViewModel etkezesViewModel;
+    private ProfileViewModel profileViewModel;
 
     private FragmentDiagramBinding binding;
     BarChart barChart;
@@ -42,9 +44,12 @@ public class DiagramFragment extends Fragment {
     double maxKaloria;
     private MenuItem item;
     private MenuItem item2;
+    private MenuItem item3;
     double maxKaloriaHeti;
     String xNev;
     String formattedDate;
+    double MaBevittKaloria;
+    double MaTervezettKaloria;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDiagramBinding.inflate(inflater, container, false);
@@ -53,6 +58,7 @@ public class DiagramFragment extends Fragment {
         setHasOptionsMenu(true);
 
         etkezesViewModel = new ViewModelProvider(this).get(EtkezesViewModel.class);
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         barChart = root.findViewById(R.id.chart);
         barChart.getAxisRight().setDrawLabels(false);
 
@@ -167,6 +173,47 @@ public class DiagramFragment extends Fragment {
             barChart.invalidate();
         });
     }
+    public void FogyaszthatoDiagram(){
+        if (barChart!=null) {
+            barChart.clear();
+        }
+        if (entries!=null) {
+            entries.clear();
+        }
+        profileViewModel.getProfile().observe(getViewLifecycleOwner(), etkezesek -> {
+            for (int i=0;i<etkezesek.size();i++){
+                MaTervezettKaloria=etkezesek.get(i).getCelKaloria();
+                System.out.println("Eprecske"+MaTervezettKaloria);
+            }
+        });
+        etkezesViewModel.getAllEtkezesFogyaszthato().observe(getViewLifecycleOwner(), etkezesek -> {
+            for (int i=0;i<etkezesek.size();i++){
+                MaBevittKaloria=etkezesek.get(i).getKaloria();
+                entries.add(new BarEntry(i, (float) MaBevittKaloria));
+
+            }
+            YAxis yAxis = barChart.getAxisLeft();
+            yAxis.setAxisMaximum((float)MaTervezettKaloria);
+            yAxis.setAxisMinimum(0f);
+            yAxis.setAxisLineWidth(2f);
+            yAxis.setAxisLineColor(Color.BLACK);
+            yAxis.setLabelCount(10);
+            BarDataSet dataSet = new BarDataSet(entries, "Nap Kaloria Adatok");
+            dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+            barData = new BarData(dataSet);
+            barChart.setData(barData);
+            List<String> xValues = new ArrayList<>();
+
+                xValues.add("Ma Bevitt Kaloria ");
+            barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValues));
+            barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            barChart.getXAxis().setGranularity(1f);
+            barChart.getXAxis().setGranularityEnabled(true);
+
+            barChart.getDescription().setEnabled(false);
+            barChart.invalidate();
+        });
+    }
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         item = menu.findItem(R.id.action_NapiKaloria);
@@ -179,6 +226,12 @@ public class DiagramFragment extends Fragment {
         item2.setVisible(true);
         item2.setOnMenuItemClickListener(v->{
             HetiKaloriaDiagram();
+            return true;
+        });
+        item3 = menu.findItem(R.id.action_ElfogaszthatoKaloria);
+        item3.setVisible(true);
+        item3.setOnMenuItemClickListener(v->{
+            FogyaszthatoDiagram();
             return true;
         });
 

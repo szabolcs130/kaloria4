@@ -31,6 +31,9 @@ public class EtkezesRepository {
     }public LiveData<List<EtkezesOsszevont>> getAllEtkezesGroupByHet(){
         return database.etkezesDao().getAllEtkezesGroupByHet();
     }
+    public LiveData<List<EtkezesOsszevont>> getAllEtkezesFogyaszthato(){
+        return database.etkezesDao().getAllEtkezesFogyaszthato();
+    }
     public void inserEtkezes(Etkezes etkezes){
         new AsyncTask<Void, Void, Void>() {
             @Override

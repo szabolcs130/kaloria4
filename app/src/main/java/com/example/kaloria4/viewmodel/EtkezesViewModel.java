@@ -30,6 +30,8 @@ public class EtkezesViewModel extends AndroidViewModel {
         return etkezesRepository.getAllEtkezesMaxKaloriaMax();
     }public LiveData<List<EtkezesOsszevont>> getAllEtkezesGroupByHet() {
         return etkezesRepository.getAllEtkezesGroupByHet();
+    }public LiveData<List<EtkezesOsszevont>> getAllEtkezesFogyaszthato() {
+        return etkezesRepository.getAllEtkezesFogyaszthato();
     }
     public void insertEtkezes(Etkezes etkezes){
         etkezesRepository.inserEtkezes(etkezes);
