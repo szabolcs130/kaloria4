@@ -48,7 +48,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersAdapter
         String etelid = ("" + etel.getEtelid());
         holder.etelNev.setText(username);
         holder.etelKaloria.setText(kaloria+" kcal");
-        holder.etelid.setText("Étkezés sorszáma: "+etelid);
+        holder.etelid.setText("Étel sorszáma: "+etelid);
         String imageUrl = etel.getImageUri();
         Glide.with(context)
                 .load(imageUrl)
@@ -64,7 +64,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersAdapter
         holder.itemView.setOnClickListener(v -> {
             Toast.makeText(context, "Étel kiválasztva: " + etel.getEtelnev(), Toast.LENGTH_SHORT).show();
         });
-        holder.itemView.setOnClickListener(v -> Toast.makeText(context, "Nyomkod", Toast.LENGTH_SHORT).show());
     }
 
     public void showPpUp(View view, Etel etel) {

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,10 @@ public class DetailedViewFragment extends Fragment {
         LinearLayout containerLayout = root.findViewById(R.id.detailedContainerLayout);
 
         if (getArguments() != null) {
+            String date = getArguments().getString("date", "Részletes nézet");
+
+            ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(date);
+
             tipusokraBontva = (Map<String, List<EtkezesOsszevont>>) getArguments().getSerializable(ARG_TIPUSOK);
 
             String[] tipusok = {"Reggeli", "Ebéd", "Vacsora", "Snack"};
@@ -44,7 +49,6 @@ public class DetailedViewFragment extends Fragment {
                     recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
                     EtkezesAdapter adapter = getEtkezesAdapter(etkezesLista);
-
                     recyclerView.setAdapter(adapter);
                     containerLayout.addView(recyclerView);
                 }
@@ -53,6 +57,7 @@ public class DetailedViewFragment extends Fragment {
 
         return root;
     }
+
     @NonNull
     private static EtkezesAdapter getEtkezesAdapter(List<EtkezesOsszevont> etkezesLista) {
         EtkezesAdapter adapter = new EtkezesAdapter(new EtkezesAdapter.ClickListener() {

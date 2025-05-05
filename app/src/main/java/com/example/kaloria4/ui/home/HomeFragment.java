@@ -1,7 +1,6 @@
 package com.example.kaloria4.ui.home;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +8,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kaloria4.R;
-import com.example.kaloria4.adapter.EtkezesAdapter;
 import com.example.kaloria4.model.EtkezesOsszevont;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -52,16 +48,13 @@ public class HomeFragment extends Fragment {
                         napiOsszKaloria += e.getEtkezesIdopontGramm();
                     }
                 }
-                TextView dateHeader = new TextView(requireContext());
-                dateHeader.setText(date + " - Össz: " + napiOsszKaloria + " kcal");
-                dateHeader.setTextSize(22);
-                dateHeader.setPadding(0, 24, 0, 16);
-                dateHeader.setTextColor(getResources().getColor(R.color.black));
-                dateHeader.setGravity(Gravity.CENTER);
-                containerLayout.addView(dateHeader);
-                dateHeader.setOnClickListener(v -> {
-                    openDetailedView(date, tipusokraBontva);
-                });
+
+                View cardView = layoutInflater.inflate(R.layout.item_date_card, containerLayout, false);
+                TextView dateTextView = cardView.findViewById(R.id.dateTextView);
+                dateTextView.setText(date + " - Össz: " + napiOsszKaloria + " kcal");
+
+                cardView.setOnClickListener(v -> openDetailedView(date, tipusokraBontva));
+                containerLayout.addView(cardView);
             }
         });
 
@@ -76,5 +69,4 @@ public class HomeFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.detailedViewFragment, args);
     }
-
 }
