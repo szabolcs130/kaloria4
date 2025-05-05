@@ -74,6 +74,10 @@ public class ProfileFragment extends Fragment {
                     currentProfile = profiles.get(0);
                     updateUI(currentProfile);
                 }
+                else {
+                    btnModify.setText("Még nem állítottad be a fiókod? Kattints ide");
+                }
+
             }
         });
 
@@ -145,7 +149,11 @@ public class ProfileFragment extends Fragment {
                     newProfile.setSulyKg(Integer.parseInt(updatedWeight));
                     newProfile.setCel(Integer.parseInt(updatedGoal));
                     newProfile.setImageUrl(finalImageUrl);
+                    newProfile.setCelKaloria(Integer.parseInt(updatedGoalCalories));
                     profileViewModel.insertUser(newProfile);
+
+                    Button btnModify = binding.modifyButton;
+                    btnModify.setText("Módosítás");
                 }
                 alertDialog.dismiss();
 
@@ -155,6 +163,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUI(Profile profile) {
+
         currentProfile = profile;
         profileNameDisplay.setText(profile.getNev());
         profileHeightDisplay.setText(String.valueOf(profile.getMagassagCm()));
